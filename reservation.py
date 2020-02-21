@@ -19,8 +19,9 @@ WHU = settings.WHU
 class reservationClass:
     def main(self):
         driver = webdriver.Chrome()
-        for i in range(1, 1000):
-            wait = WebDriverWait(driver, 15)
+        number = 0
+        while number <  1000:
+            wait = WebDriverWait(driver, 20)
             url = "https://yoyaku-f.koyama.co.jp/scripts/mtr1010.asp"
             driver.get(url)
 
@@ -70,22 +71,26 @@ class reservationClass:
                     "text": text
                 }))
             time.sleep(180)
+            number += 1
+        pass
 
     def shutdown_driver(self):
         driver = webdriver.Chrome()
         driver.quit()
+        pass
 
     def back_to_home(self):
         driver = webdriver.Chrome()
         url = "https://yoyaku-f.koyama.co.jp/scripts/mtr1010.asp"
         driver.get(url)
-
+        pass
 
 if __name__ == '__main__':
     while True:
         try:
             reservationClass().main()
         except TimeoutException as te: 
+            print(te)
             reservationClass().shutdown_driver()
             reservationClass().back_to_home()
             reservationClass().main()
