@@ -5,6 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
+
 import time
 import requests
 import json
@@ -80,9 +81,8 @@ if __name__ == '__main__':
     while True:
         try:
             reservationClass().main()
-          
-
         except TimeoutException as te: 
             reservationClass().back_to_home()
             reservationClass().main()
+
 
