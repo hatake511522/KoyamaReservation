@@ -70,7 +70,7 @@ class reservationClass:
                     "icon_url": "https://stickershop.line-scdn.net/stickershop/v1/product/1154602/LINEStorePC/main.png;compress=true",
                     "text": text
                 }))
-            time.sleep(180)
+            time.sleep(600)
             number += 1
         pass
 
@@ -83,6 +83,7 @@ class reservationClass:
         driver = webdriver.Chrome()
         url = "https://yoyaku-f.koyama.co.jp/scripts/mtr1010.asp"
         driver.get(url)
+        time.sleep(10)
         pass
 
 if __name__ == '__main__':
