@@ -71,6 +71,10 @@ class reservationClass:
                 }))
             time.sleep(180)
 
+    def shutdown_driver(self):
+        driver = webdriver.Chrome()
+        driver.quit()
+
     def back_to_home(self):
         driver = webdriver.Chrome()
         url = "https://yoyaku-f.koyama.co.jp/scripts/mtr1010.asp"
@@ -82,6 +86,7 @@ if __name__ == '__main__':
         try:
             reservationClass().main()
         except TimeoutException as te: 
+            reservationClass().shutdown_driver()
             reservationClass().back_to_home()
             reservationClass().main()
 
