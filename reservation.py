@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.chrome.options import Options
 
 
 import time
@@ -19,7 +20,9 @@ WHU = settings.WHU
 
 class reservationClass:
     def main(self):
-        driver = webdriver.Chrome()
+        options = Options()
+        options.add_argument('--headless')
+        driver = webdriver.Chrome(options=options)
         number = 0
         while number <  1000:
             wait = WebDriverWait(driver, 20)
@@ -72,18 +75,24 @@ class reservationClass:
                   username="PAPARU君",
                   icon_url="https://stickershop.line-scdn.net/stickershop/v1/product/1154602/LINEStorePC/main.png;compress=true",
                   text=text)
+            else:
+                print('空き無し')
             time.sleep(60)
             number += 1
         pass
 
     def shutdown_driver(self):
-        driver = webdriver.Chrome()
+        options = Options()
+        options.add_argument('--headless')
+        driver = webdriver.Chrome(options=options)
         driver.quit()
         time.sleep(10)
         pass
 
     def back_to_home(self):
-        driver = webdriver.Chrome()
+        options = Options()
+        options.add_argument('--headless')
+        driver = webdriver.Chrome(options=options)
         url = "https://yoyaku-f.koyama.co.jp/scripts/mtr1010.asp"
         driver.get(url)
         time.sleep(10)
