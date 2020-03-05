@@ -7,6 +7,7 @@ from selenium.common.exceptions import TimeoutException
 
 
 import time
+import slackweb
 import requests
 import json
 import os
@@ -24,6 +25,7 @@ class reservationClass:
             wait = WebDriverWait(driver, 20)
             url = "https://yoyaku-f.koyama.co.jp/scripts/mtr1010.asp"
             driver.get(url)
+            time.sleep(5) #この一行でエラー直りました
 
             login_element = wait.until(EC.element_to_be_clickable((By.NAME, 'login')))
             user_code_xpath     = "/html/body/div/form/table/tbody/tr[1]/td[2]/input"
@@ -65,18 +67,19 @@ class reservationClass:
             webhook_url = WHU
             text = '現在コヤマに空きが%d件あります。急げ！' % empty_number
             if empty_number > 0:
-                requests.post(webhook_url, data=json.dumps({
-                    "username": "PAPARU君",
-                    "icon_url": "https://stickershop.line-scdn.net/stickershop/v1/product/1154602/LINEStorePC/main.png;compress=true",
-                    "text": text
-                }))
-            time.sleep(600)
+                slack = slackweb.Slack(url=webhook_url)
+                slack.notify(
+                  username="PAPARU君",
+                  icon_url="https://stickershop.line-scdn.net/stickershop/v1/product/1154602/LINEStorePC/main.png;compress=true",
+                  text=text)
+            time.sleep(60)
             number += 1
         pass
 
     def shutdown_driver(self):
         driver = webdriver.Chrome()
         driver.quit()
+        time.sleep(10)
         pass
 
     def back_to_home(self):
@@ -91,7 +94,6 @@ if __name__ == '__main__':
         try:
             reservationClass().main()
         except TimeoutException as te: 
-            print(te)
             reservationClass().shutdown_driver()
             reservationClass().back_to_home()
             reservationClass().main()
