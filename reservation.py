@@ -4,9 +4,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.chrome.options import Options
 
 
 import time
+import datetime
 import slackweb
 import requests
 import json
@@ -19,7 +21,9 @@ WHU = settings.WHU
 
 class reservationClass:
     def main(self):
-        driver = webdriver.Chrome()
+        options = Options()
+        options.add_argument('--headless')
+        driver = webdriver.Chrome(options=options)
         number = 0
         while number <  1000:
             wait = WebDriverWait(driver, 20)
@@ -32,7 +36,6 @@ class reservationClass:
             user_password_xpath = "/html/body/div/form/table/tbody/tr[2]/td[2]/input"
             driver.find_element_by_xpath(user_code_xpath).send_keys(USC)
             driver.find_element_by_xpath(user_password_xpath).send_keys(USP)
-
             login_element.click()  # ログインボタン
 
             reserve_element = wait.until(EC.element_to_be_clickable((By.NAME, 'mtr1010')))
@@ -40,7 +43,7 @@ class reservationClass:
 
             wait.until(EC.element_to_be_clickable((By.NAME, 'logout')))
             kushya1 = driver.find_elements_by_xpath(
-                "//img[@src='ko2_kushya.gif']")
+                "//img[@src='ko2_kusya.gif']")
 
             next_display_path1 = "/html/body/div[1]/form[1]/table[1]/tbody/tr[3]/td[3]/input"
             next_display1_element = wait.until(EC.element_to_be_clickable((By.XPATH, next_display_path1)))
@@ -48,7 +51,7 @@ class reservationClass:
 
             wait.until(EC.element_to_be_clickable((By.NAME, 'logout')))
             kushya2 = driver.find_elements_by_xpath(
-                "//img[@src='ko2_kushya.gif']")
+                "//img[@src='ko2_kusya.gif']")
 
             next_display_path2 = "/html/body/div[1]/form[1]/table[1]/tbody/tr[3]/td[3]/input"
             next_display2_element = wait.until(EC.element_to_be_clickable((By.XPATH, next_display_path2)))
@@ -56,14 +59,15 @@ class reservationClass:
 
             wait.until(EC.element_to_be_clickable((By.NAME, 'logout')))
             kushya3 = driver.find_elements_by_xpath(
-                "//img[@src='ko2_kushya.gif']")
+                "//img[@src='ko2_kusya.gif']")
 
             logout_path = "/html/body/div[1]/form[2]/input"
             wait.until(EC.element_to_be_clickable((By.NAME, 'logout')))
             driver.find_element_by_xpath(logout_path).click()
             wait.until(EC.element_to_be_clickable((By.NAME, 'login')))
-
+            
             empty_number = len(kushya1) + len(kushya2) + len(kushya3)
+            dt_now = datetime.datetime.now()
             webhook_url = WHU
             text = '現在コヤマに空きが%d件あります。急げ！' % empty_number
             if empty_number > 0:
@@ -72,18 +76,24 @@ class reservationClass:
                   username="PAPARU君",
                   icon_url="https://stickershop.line-scdn.net/stickershop/v1/product/1154602/LINEStorePC/main.png;compress=true",
                   text=text)
-            time.sleep(60)
+            elif empty_number == 0:
+                print(dt_now.strftime('%Y年%m月%d日 %H:%M') + "時点空き無し")
+            time.sleep(290)
             number += 1
         pass
 
     def shutdown_driver(self):
-        driver = webdriver.Chrome()
+        options = Options()
+        options.add_argument('--headless')
+        driver = webdriver.Chrome(options=options)
         driver.quit()
         time.sleep(10)
         pass
 
     def back_to_home(self):
-        driver = webdriver.Chrome()
+        options = Options()
+        options.add_argument('--headless')
+        driver = webdriver.Chrome(options=options)
         url = "https://yoyaku-f.koyama.co.jp/scripts/mtr1010.asp"
         driver.get(url)
         time.sleep(10)
