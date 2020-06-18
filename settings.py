@@ -1,4 +1,5 @@
-#実行すると .env ファイルに期日した認証情報を環境変数へ記述してくれる
+# coding: utf-8
+# 実行すると .env ファイルに期日した認証情報を環境変数へ記述してくれる
 import os
 from os.path import join, dirname
 from dotenv import load_dotenv

@@ -45,28 +45,12 @@ class reservationClass:
             kushya1 = driver.find_elements_by_xpath(
                 "//input[@src='/images/ko2_kusya.gif']")
 
-            next_display_path1 = "/html/body/div[1]/form[1]/table[1]/tbody/tr[3]/td[3]/input"
-            next_display1_element = wait.until(EC.element_to_be_clickable((By.XPATH, next_display_path1)))
-            next_display1_element.click()  # 次画面に遷移
-
-            wait.until(EC.element_to_be_clickable((By.NAME, 'logout')))
-            kushya2 = driver.find_elements_by_xpath(
-                "//input[@src='/images/ko2_kusya.gif']")
-
-            next_display_path2 = "/html/body/div[1]/form[1]/table[1]/tbody/tr[3]/td[3]/input"
-            next_display2_element = wait.until(EC.element_to_be_clickable((By.XPATH, next_display_path2)))
-            next_display2_element.click()  # 次画面に遷移
-
-            wait.until(EC.element_to_be_clickable((By.NAME, 'logout')))
-            kushya3 = driver.find_elements_by_xpath(
-                "//input[@src='/images/ko2_kusya.gif']")
-
             logout_path = "/html/body/div[1]/form[2]/input"
             wait.until(EC.element_to_be_clickable((By.NAME, 'logout')))
             driver.find_element_by_xpath(logout_path).click()
             wait.until(EC.element_to_be_clickable((By.NAME, 'login')))
             
-            empty_number = len(kushya1) + len(kushya2) + len(kushya3)
+            empty_number = len(kushya1)
             dt_now = datetime.datetime.now()
             webhook_url = WHU
             text = '現在コヤマに空きが%d件あります。急げ！' % empty_number
@@ -78,7 +62,7 @@ class reservationClass:
                   text=text)
             elif empty_number == 0:
                 print(dt_now.strftime('%Y年%m月%d日 %H:%M') + "時点空き無し")
-            time.sleep(30)
+            time.sleep(60)
             number += 1
         pass
 
